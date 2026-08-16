@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="고정수를 선택하고 1~5게임의 로또 6/45 번호를 간편하게 생성하세요."
+    />
+    <meta name="theme-color" content="#171c2b" />
+    <title>Lucky Six — 로또 번호 생성기</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Lucky Six 홈">
+        <span class="brand-mark" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
+        <span class="brand-name">LUCKY SIX</span>
+      </a>
+      <span class="lotto-badge"><i aria-hidden="true"></i> LOTTO 6/45</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow"><span aria-hidden="true">✦</span> 오늘의 행운을 가볍게</p>
+        <h1 id="page-title">여섯 개의 숫자,<br /><em>기분 좋은 설렘.</em></h1>
+        <p class="hero-copy">
+          원하는 숫자는 고정하고, 나머지는 공정하게.<br class="desktop-break" />
+          나만의 행운 조합을 지금 만들어 보세요.
+        </p>
+      </section>
+
+      <section class="generator-shell" aria-label="로또 번호 생성기">
+        <div class="control-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">PICK YOUR LUCK</p>
+              <h2>게임 설정</h2>
+            </div>
+            <span class="secure-random"><i aria-hidden="true"></i> 공정 난수</span>
+          </div>
+
+          <div class="control-block game-count-block">
+            <div class="label-row">
+              <div>
+                <h3>게임 수</h3>
+                <p>한 번에 최대 5게임</p>
+              </div>
+              <div class="stepper" aria-label="게임 수 선택">
+                <button id="decrease-count" type="button" aria-label="게임 수 줄이기">−</button>
+                <output id="game-count" aria-live="polite">1</output>
+                <button id="increase-count" type="button" aria-label="게임 수 늘리기">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-block fixed-number-block">
+            <div class="label-row fixed-label-row">
+              <div>
+                <h3>고정수 선택 <span>선택 사항</span></h3>
+                <p>매 게임에 꼭 넣을 번호를 골라주세요.</p>
+              </div>
+              <div class="selection-count"><strong id="fixed-count">0</strong> / 5</div>
+            </div>
+            <div id="number-grid" class="number-grid" aria-label="고정수 선택, 최대 5개"></div>
+            <div class="fixed-actions">
+              <p id="fixed-hint"><span aria-hidden="true">↗</span> 최대 5개까지 선택할 수 있어요.</p>
+              <button id="clear-fixed" class="text-button" type="button" disabled>선택 초기화</button>
+            </div>
+          </div>
+
+          <button id="generate-button" class="generate-button" type="button">
+            <span class="button-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M18.4 4.2a8.5 8.5 0 0 0-12.7 1L4.2 3.7v5h5L7.3 6.8A6.3 6.3 0 0 1 18 11.3h2.2a8.5 8.5 0 0 0-1.8-7.1Zm1.4 11.1h-5v5l1.9-1.9a6.3 6.3 0 0 1-10.7-4.5H3.8a8.5 8.5 0 0 0 14.5 6.1l1.5 1.5v-6.2Z" />
+              </svg>
+            </span>
+            <span><strong>행운 번호 만들기</strong><small id="generate-subtitle">1게임을 생성합니다</small></span>
+            <span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div class="result-panel">
+          <div class="result-header">
+            <div>
+              <p class="section-kicker">YOUR NUMBERS</p>
+              <h2>행운 번호</h2>
+            </div>
+            <div id="result-actions" class="result-actions" hidden>
+              <button id="copy-all" class="icon-text-button" type="button" aria-label="모든 게임 번호 복사">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7V5.8A1.8 1.8 0 0 1 9.8 4h8.4A1.8 1.8 0 0 1 20 5.8v8.4a1.8 1.8 0 0 1-1.8 1.8H17v2.2a1.8 1.8 0 0 1-1.8 1.8H6.8A1.8 1.8 0 0 1 5 18.2V9.8A1.8 1.8 0 0 1 6.8 8H8Zm2 1h5.2A1.8 1.8 0 0 1 17 9.8V14h1V6h-8v2Zm-3 2v8h8v-8H7Z" /></svg>
+                전체 복사
+              </button>
+              <button id="share-all" class="round-icon-button" type="button" aria-label="행운 번호 공유">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.5.3-2 .8l-7-4.1c.1-.3.1-.5.1-.8s0-.6-.1-.8l6.9-4.1A3 3 0 1 0 15 5c0 .3 0 .6.1.8L8.2 9.9a3 3 0 1 0 0 4.2l6.9 4.1c-.1.2-.1.5-.1.8a3 3 0 1 0 3-2.9Z" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <div id="empty-state" class="empty-state">
+            <div class="lottery-machine" aria-hidden="true">
+              <div class="machine-glass">
+                <span class="mini-ball ball-yellow">7</span>
+                <span class="mini-ball ball-red">24</span>
+                <span class="mini-ball ball-blue">13</span>
+                <span class="mini-ball ball-green">42</span>
+                <span class="spark spark-one">✦</span>
+                <span class="spark spark-two">✦</span>
+              </div>
+              <div class="machine-neck"></div>
+              <div class="machine-base"><i></i><i></i><i></i></div>
+            </div>
+            <h3>아직 뽑은 번호가 없어요</h3>
+            <p>설정을 마치고 행운 번호를 만들어 보세요.</p>
+          </div>
+
+          <div id="results" class="results" aria-live="polite" aria-atomic="false"></div>
+
+          <div id="result-footer" class="result-footer" hidden>
+            <p><span aria-hidden="true">✓</span> 숫자는 작은 수부터 정렬했어요.</p>
+            <button id="regenerate-button" class="text-button" type="button">같은 설정으로 다시 뽑기</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="history-section" class="history-section" aria-labelledby="history-title" hidden>
+        <div class="history-heading">
+          <div>
+            <p class="section-kicker">RECENT LUCK</p>
+            <h2 id="history-title">최근 조합</h2>
+          </div>
+          <button id="clear-history" class="text-button danger" type="button">기록 지우기</button>
+        </div>
+        <div id="history-list" class="history-list"></div>
+      </section>
+
+      <section class="info-strip" aria-label="이용 안내">
+        <p><span aria-hidden="true">◎</span> 모든 조합은 브라우저의 보안 난수로 생성됩니다.</p>
+        <p><span aria-hidden="true">◷</span> 최근 5회 결과는 이 기기에만 저장됩니다.</p>
+        <p><span aria-hidden="true">♧</span> 번호 생성은 당첨을 보장하지 않습니다.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>LUCKY SIX <span>·</span> 좋은 예감은 숫자보다 먼저 옵니다.</p>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
