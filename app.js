@@ -5,6 +5,7 @@
   const MAX_GAME_COUNT = 5;
   const MAX_FIXED_COUNT = 5;
   const MAX_HISTORY = 5;
+  const THEME_KEY = 'lucky-six-theme';
 
   const state = {
     gameCount: 1,
@@ -34,6 +35,8 @@
     historyList: document.querySelector("#history-list"),
     clearHistory: document.querySelector("#clear-history"),
     toast: document.querySelector("#toast"),
+    themeToggle: document.querySelector('#theme-toggle'),
+    themeLabel: document.querySelector('#theme-label'),
   };
 
   let toastTimer;
@@ -190,6 +193,21 @@
     elements.toast.textContent = message;
     elements.toast.classList.add("show");
     toastTimer = setTimeout(() => elements.toast.classList.remove("show"), 2400);
+  }
+
+  function applyTheme(theme, announce = false) {
+    const isDark = theme === 'dark';
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+    elements.themeToggle.setAttribute('aria-pressed', String(isDark));
+    elements.themeToggle.setAttribute('aria-label', isDark ? '라이트 모드로 전환' : '다크 모드로 전환');
+    elements.themeLabel.textContent = isDark ? '라이트 모드로 전환' : '다크 모드로 전환';
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content', isDark ? '#10131c' : '#171c2b');
+    try {
+      localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+    } catch {
+      // Theme selection still works when browser storage is unavailable.
+    }
+    if (announce) showToast(isDark ? '다크 모드로 바꿨어요.' : '라이트 모드로 바꿨어요.');
   }
 
   function renderNumberGrid() {
@@ -385,6 +403,10 @@
   }
 
   function bindEvents() {
+    elements.themeToggle.addEventListener('click', () => {
+      applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true);
+    });
+
     elements.decreaseCount.addEventListener("click", () => {
       state.gameCount = Math.max(1, state.gameCount - 1);
       renderCount();
@@ -473,6 +495,7 @@
 
   function init() {
     loadState();
+    applyTheme(document.documentElement.dataset.theme);
     renderCount();
     renderNumberGrid();
     renderResults();
