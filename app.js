@@ -197,10 +197,13 @@
 
   function applyTheme(theme, announce = false) {
     const isDark = theme === 'dark';
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+    const nextTheme = isDark ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    document.documentElement.style.colorScheme = nextTheme;
     elements.themeToggle.setAttribute('aria-pressed', String(isDark));
     elements.themeToggle.setAttribute('aria-label', isDark ? '라이트 모드로 전환' : '다크 모드로 전환');
-    elements.themeLabel.textContent = isDark ? '라이트 모드로 전환' : '다크 모드로 전환';
+    elements.themeToggle.title = isDark ? '화이트모드로 전환' : '다크모드로 전환';
+    elements.themeLabel.textContent = isDark ? '화이트모드' : '다크모드';
     document.querySelector('meta[name=theme-color]')?.setAttribute('content', isDark ? '#10131c' : '#171c2b');
     try {
       localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');

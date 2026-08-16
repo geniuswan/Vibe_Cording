@@ -172,53 +172,39 @@ footer {
 
 .theme-toggle {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: inline-flex;
   align-items: center;
-  width: 62px;
-  height: 34px;
+  justify-content: center;
+  gap: 7px;
+  min-width: 108px;
+  height: 38px;
   margin-left: 10px;
-  padding: 3px;
+  padding: 4px 12px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.48);
-  color: #727789;
+  color: #4f5564;
   cursor: pointer;
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  transition: background 180ms ease, color 180ms ease, transform 160ms ease;
 }
 
-.theme-icon {
+.theme-toggle:hover {
+  border-color: rgba(112, 88, 232, 0.45);
+  transform: translateY(-1px);
+}
+
+.theme-button-label {
   position: relative;
-  z-index: 2;
-  font-size: 0.9rem;
-  line-height: 1;
-  text-align: center;
-}
-
-.theme-icon-sun { color: #946e15; }
-.theme-icon-moon { color: #9498a5; }
-
-.theme-thumb {
-  position: absolute;
   z-index: 1;
-  top: 3px;
-  left: 3px;
-  width: 27px;
-  height: 27px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 3px 9px rgba(28, 31, 44, 0.16);
-  transition: transform 220ms cubic-bezier(0.2, 0.72, 0.25, 1), background 180ms ease;
 }
 
-.visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
+.theme-button-icon {
+  color: #7058e8;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .lotto-badge i,
@@ -1032,14 +1018,8 @@ footer span {
     var(--paper);
 }
 
-:root[data-theme=dark] .theme-toggle { background: rgba(255, 255, 255, 0.07); }
-:root[data-theme=dark] .theme-thumb {
-  background: #343a4c;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-  transform: translateX(27px);
-}
-:root[data-theme=dark] .theme-icon-sun { color: #777d8e; }
-:root[data-theme=dark] .theme-icon-moon { color: #e0d8ff; }
+:root[data-theme=dark] .theme-toggle { background: rgba(255, 255, 255, 0.09); color: #f4f1e9; }
+:root[data-theme=dark] .theme-button-icon { color: #d0f64b; }
 :root[data-theme=dark] .lotto-badge { background: rgba(255, 255, 255, 0.055); }
 :root[data-theme=dark] .generator-shell { border-color: rgba(255, 255, 255, 0.08); }
 :root[data-theme=dark] .result-panel {
